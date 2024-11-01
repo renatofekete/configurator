@@ -16,6 +16,13 @@
   --bg-300: #efefef;
 }
 
+@mixin font($fw: normal, $fz: 16, $lh: 1.5) {
+  font-family: Satoshi-Regular, sans-serif;
+  font-weight: $fw;
+  font-size: $fz + px;
+  line-height: $lh;
+}
+
 body {
   font-family: Satoshi-Regular;
   line-height: 1.5;

@@ -1,11 +1,18 @@
 import { ReactElement, useState } from 'react'
 
-function useMultiStep(steps: ReactElement[]) {
+type multiStepProps = {
+  component: ReactElement
+  nextButton?: string
+  handleBeforeNext?: () => boolean
+}
+
+function useMultiStep(steps: multiStepProps[]) {
   const [step, setStep] = useState(0)
 
-  const currentElement = steps[step]
+  const currentElement = steps[step].component
 
   function next() {
+    if (steps[step].handleBeforeNext && !steps[step].handleBeforeNext()) return
     setStep((i) => {
       if (i >= steps.length - 1) return i
       return i + 1
@@ -23,11 +30,13 @@ function useMultiStep(steps: ReactElement[]) {
     return (
       <>
         <button onClick={back} disabled={step === 0}>
-          Back
+          Nazad
         </button>
-        <button onClick={next} disabled={step === steps.length - 1}>
-          Next
-        </button>
+        {steps[step].nextButton && (
+          <button onClick={next} disabled={step === steps.length - 1}>
+            {steps[step].nextButton}
+          </button>
+        )}
       </>
     )
   }

@@ -1,10 +1,13 @@
 import './App.scss'
 import ConfigWrapper from './components/ConfigWrapper'
+import Page from './components/layout/Page'
 
 function App() {
   return (
     <>
-      <ConfigWrapper />
+      <Page>
+        <ConfigWrapper />
+      </Page>
     </>
   )
 }
