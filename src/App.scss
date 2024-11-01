@@ -1,0 +1,22 @@
+@import './scss/satoshi.scss';
+:root {
+  --base-100: #1c1c1c;
+  --base-200: #585757;
+  --base-300: #969696;
+  --base-400: #00000026;
+  --base-500: #0000000a;
+  --base-600: #ffffff;
+
+  --primary-100: #004289;
+  --primary-200: #0f5096;
+  --error: #ef4147;
+
+  --bg-100: #fefefe;
+  --bg-200: #f8f8f8;
+  --bg-300: #efefef;
+}
+
+body {
+  font-family: Satoshi-Regular;
+  line-height: 1.5;
+}

@@ -1,7 +1,12 @@
 import './App.scss'
+import ConfigWrapper from './components/ConfigWrapper'
 
 function App() {
-  return <>CONFIGURATOR</>
+  return (
+    <>
+      <ConfigWrapper />
+    </>
+  )
 }
 
 export default App
