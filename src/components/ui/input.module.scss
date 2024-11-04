@@ -1,0 +1,49 @@
+.input {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-left: 10px;
+  }
+
+  input,
+  textarea {
+    font-family: Satoshi-Variable, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 5px 10px;
+    background: var(--base-500);
+    color: var(--base-100);
+    border: none;
+    border-radius: 3px;
+    box-shadow: inset 0px 0px 0px 1px var(--base-500);
+
+    &:hover {
+      box-shadow: inset 0px 0px 0px 1px var(--base-400);
+    }
+
+    &:focus {
+      border-width: 2px;
+      outline: none;
+      box-shadow: inset 0px 0px 0px 2px var(--primary-200),
+        0px 0px 0px 2px var(--base-500);
+    }
+  }
+
+  textarea {
+    resize: none;
+    height: 4em;
+  }
+}
+
+.error {
+  input,
+  textarea {
+    box-shadow: inset 0px 0px 0px 1px var(--error);
+  }
+  p {
+    margin-left: 10px;
+    color: var(--error);
+  }
+}

@@ -1,8 +1,27 @@
 import { useConfiguratorContext } from '../context/ConfiguratorContext'
+import { calculateTotalPrice } from '../utils/price'
 
 function FormConfirmation() {
   const { configurator } = useConfiguratorContext()
-  const { manufacturer, name, note, telephone, email } = configurator
+  const {
+    manufacturerId,
+    fullName,
+    note,
+    phoneNumber,
+    email,
+    serviceIds,
+    manufacturerList,
+    servicesList,
+    coupon,
+  } = configurator
+
+  const car = manufacturerList.find((car) => car.id === manufacturerId)?.name
+
+  const selectedServices = servicesList.filter((service) => {
+    return serviceIds.includes(service.id.toString())
+  })
+
+  const price = calculateTotalPrice(servicesList, serviceIds, coupon)
 
   return (
     <div>
@@ -15,30 +34,32 @@ function FormConfirmation() {
       </p>
       <div>
         <h4>Model vozila</h4>
-        <p>{manufacturer}</p>
+        <p>{car}</p>
         <h4>Odabrane usluge</h4>
         <ul>
-          <li>
-            <p>Zamjena ulja i filtera</p> <p>65,00 €</p>
-          </li>
-          <li>
-            <p>Servis klima uređaja</p> <p>40,00 €</p>
-          </li>
+          {selectedServices.map((service) => (
+            <li key={service.id}>
+              <p>
+                <span>{service.name}</span> - {service.price} €
+              </p>
+            </li>
+          ))}
           <li>
             <p>
-              <span>Popust 20%:</span> -21,00 €
+              <span>Popust {coupon}%:</span> - {price.discount} €
             </p>
           </li>
           <li>
             <p>
-              <span>Ukupno:</span>84,00 €
+              <span>Ukupno:</span>
+              {price.discountedPrice} €
             </p>
           </li>
         </ul>
         <h4>Kontakt podaci</h4>
-        <p>Ime i prezime: {name}</p>
+        <p>Ime i prezime: {fullName}</p>
         <p>Email adresa: {email}</p>
-        <p>Broj telefona: {telephone}</p>
+        <p>Broj telefona: {phoneNumber}</p>
         <p>Napomena: {note}</p>
       </div>
     </div>

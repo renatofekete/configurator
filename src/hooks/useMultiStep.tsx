@@ -3,7 +3,7 @@ import { ReactElement, useState } from 'react'
 type multiStepProps = {
   component: ReactElement
   nextButton?: string
-  handleBeforeNext?: () => boolean
+  handleBeforeNext?: () => boolean | Promise<boolean>
 }
 
 function useMultiStep(steps: multiStepProps[]) {
@@ -11,8 +11,12 @@ function useMultiStep(steps: multiStepProps[]) {
 
   const currentElement = steps[step].component
 
-  function next() {
-    if (steps[step].handleBeforeNext && !steps[step].handleBeforeNext()) return
+  async function next() {
+    if (steps[step].handleBeforeNext) {
+      const canProceed = await steps[step].handleBeforeNext()
+      if (!canProceed) return
+    }
+
     setStep((i) => {
       if (i >= steps.length - 1) return i
       return i + 1
@@ -29,13 +33,11 @@ function useMultiStep(steps: multiStepProps[]) {
   function buttons() {
     return (
       <>
-        <button onClick={back} disabled={step === 0}>
-          Nazad
-        </button>
+        {step > 1 && step < steps.length - 1 && (
+          <button onClick={back}>Nazad</button>
+        )}
         {steps[step].nextButton && (
-          <button onClick={next} disabled={step === steps.length - 1}>
-            {steps[step].nextButton}
-          </button>
+          <button onClick={next}>{steps[step].nextButton}</button>
         )}
       </>
     )
