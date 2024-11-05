@@ -24,7 +24,6 @@ export function ConfiguratorProvider<T>({
   children,
 }: ConfiguratorProviderProps) {
   const [configurator, setConfigurator] = useState<T | undefined>(undefined)
-
   const [invalidFields, setInvalidFields] = useState<Error[]>([])
 
   return (

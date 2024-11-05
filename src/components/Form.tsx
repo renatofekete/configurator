@@ -11,17 +11,8 @@ import ButtonCmp from './ui/ButtonCmp'
 import ErrorMessageCmp from './ui/ErrorMessageCmp'
 import BadgeCmp from './ui/BadgeCmp'
 import styles from './form.module.scss'
-
-type Manufacturer = {
-  id: number
-  name: string
-}
-
-type Service = {
-  id: number
-  name: string
-  price: number
-}
+import { Manufacturer, Service } from '../types/types'
+import { API } from '../utils/constants'
 
 function Form() {
   const { configurator, setConfigurator, invalidFields } =
@@ -47,13 +38,9 @@ function Form() {
     coupon,
   } = configurator
 
-  const endpoints = [
-    'https://fe-interview-project-backend.accounts-a35.workers.dev/api/manufacturers',
-    'https://fe-interview-project-backend.accounts-a35.workers.dev/api/services',
-  ]
+  const endpoints = [`${API}/manufacturers`, `${API}/services`]
 
-  const couponEndpoint =
-    'https://fe-interview-project-backend.accounts-a35.workers.dev/api/validate-promo-code'
+  const couponEndpoint = `${API}/validate-promo-code`
 
   const authToken = import.meta.env.VITE_X_AUTH_TOKEN
 

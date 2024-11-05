@@ -9,6 +9,7 @@ import useFetch from '../hooks/useFetch'
 import { ConfiguratorContextType } from '../types/types'
 import Success from '../assets/icons/success-icon.svg?react'
 import Tools from '../assets/icons/tools-icon.svg?react'
+import { API } from '../utils/constants'
 
 type dataValues = {
   fullName: string
@@ -34,8 +35,7 @@ function ConfigWrapper() {
     promoCode = '',
   } = configurator || {}
 
-  const endpoint =
-    'https://fe-interview-project-backend.accounts-a35.workers.dev/api/contact'
+  const endpoint = `${API}/contact`
 
   const authToken = import.meta.env.VITE_X_AUTH_TOKEN
 
@@ -58,29 +58,37 @@ function ConfigWrapper() {
     const newInvalidFields = []
 
     if (!fullName) {
-      newInvalidFields.push({ field: 'fullName', message: 'Name is required' })
+      newInvalidFields.push({
+        field: 'fullName',
+        message: 'Ime i prezime je obavezno',
+      })
     }
     if (!phoneNumber) {
       newInvalidFields.push({
         field: 'phoneNumber',
-        message: 'Telephone is required',
+        message: 'Broj telefona je obavezan',
       })
     }
+
     if (!email) {
-      newInvalidFields.push({ field: 'email', message: 'Email is required' })
+      newInvalidFields.push({ field: 'email', message: 'Email je obavezan' })
+    }
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newInvalidFields.push({ field: 'email', message: 'Email nije ispravan' })
     }
 
     if (manufacturerId < 0) {
       newInvalidFields.push({
         field: 'manufacturerId',
-        message: 'Manufacturer is required',
+        message: 'Proizvođač je obavezan',
       })
     }
 
     if (serviceIds.length === 0) {
       newInvalidFields.push({
         field: 'serviceIds',
-        message: 'At least one service is required',
+        message: 'Bar jedna usluga je obavezna',
       })
     }
 

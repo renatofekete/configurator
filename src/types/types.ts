@@ -11,12 +11,12 @@ export type ConfiguratorContextType = {
   manufacturerList: Manufacturer[]
 }
 
-type Manufacturer = {
+export type Manufacturer = {
   id: number
   name: string
 }
 
-type Service = {
+export type Service = {
   id: number
   name: string
   price: number

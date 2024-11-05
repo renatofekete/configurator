@@ -21,7 +21,7 @@ export function format(price: number) {
 export function calculateTotalPrice(
   items: any,
   selectedItems: any,
-  coupon: number
+  coupon: number = 0
 ) {
   const prices = getPriceList(items, selectedItems)
   const totalPrice = prices.reduce((acc: any, price: any) => {

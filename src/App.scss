@@ -1,4 +1,4 @@
-@import './scss/satoshi.scss';
+@use './scss/satoshi' as *;
 :root {
   --base-100: #1c1c1c;
   --base-200: #585757;

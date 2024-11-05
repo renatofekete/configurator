@@ -7,7 +7,7 @@ function Header() {
       <nav>
         <ul>
           <li>
-            <a href='#'>Izračunajte trošak servisa</a>
+            <a href='/'>Izračunajte trošak servisa</a>
           </li>
         </ul>
       </nav>
