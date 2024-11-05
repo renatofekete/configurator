@@ -5,7 +5,7 @@ import FormConfirmation from './FormConfirmation'
 import styles from './configWrapper.module.scss'
 import { useConfiguratorContext } from '../context/ConfiguratorContext'
 import useFetch from '../hooks/useFetch'
-
+import { ConfiguratorContextType } from '../types/types'
 import Success from '../assets/icons/success-icon.svg?react'
 import Tools from '../assets/icons/tools-icon.svg?react'
 
@@ -20,7 +20,8 @@ type dataValues = {
 }
 
 function ConfigWrapper() {
-  const { validateFields, configurator } = useConfiguratorContext()
+  const { validateFields, configurator } =
+    useConfiguratorContext<ConfiguratorContextType>()
 
   const endpoint =
     'https://fe-interview-project-backend.accounts-a35.workers.dev/api/contact'

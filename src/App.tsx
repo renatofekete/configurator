@@ -2,9 +2,10 @@ import './App.scss'
 import ConfigWrapper from './components/ConfigWrapper'
 import Page from './components/layout/Page'
 import { ConfiguratorProvider } from './context/ConfiguratorContext'
+import { ConfiguratorContextType } from './types/types'
 
 function App() {
-  const fields = {
+  const fields: ConfiguratorContextType = {
     fullName: '',
     phoneNumber: '',
     email: '',
@@ -17,8 +18,9 @@ function App() {
     manufacturerList: [],
   }
 
-  function validateFields(configurator: any) {
+  function validateFields(configurator: ConfiguratorContextType) {
     const newInvalidFields = []
+
     if (!configurator.fullName) {
       newInvalidFields.push({ field: 'fullName', message: 'Name is required' })
     }

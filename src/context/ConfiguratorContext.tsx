@@ -1,58 +1,33 @@
 import { createContext, useContext, ReactNode, useState } from 'react'
 
-type Manufacturer = {
-  id: number
-  name: string
-}
-
-type Service = {
-  id: number
-  name: string
-  price: number
-}
-
-export type ConfiguratorContextType = {
-  fullName: string
-  phoneNumber: string
-  email: string
-  manufacturerId: number
-  serviceIds: string[]
-  promoCode: string
-  coupon: number
-  note: string
-  servicesList: Service[]
-  manufacturerList: Manufacturer[]
-}
-
 type Error = {
   field: string
   message: string
 }
 
-type ConfiguratorContextValue = {
-  configurator: ConfiguratorContextType
-  setConfigurator: React.Dispatch<React.SetStateAction<ConfiguratorContextType>>
+type ConfiguratorContextValue<T> = {
+  configurator: T
+  setConfigurator: React.Dispatch<React.SetStateAction<T>>
   invalidFields: Error[]
   validateFields: () => boolean
 }
 
-type ConfiguratorProviderProps<ConfiguratorContextType> = {
+type ConfiguratorProviderProps<T> = {
   children: ReactNode
-  fields: ConfiguratorContextType
-  handleValidation: (configurator: ConfiguratorContextType) => Error[]
+  fields: T
+  handleValidation: (configurator: T) => Error[]
 }
 
-const ConfiguratorContext = createContext<ConfiguratorContextValue | undefined>(
-  undefined
-)
+const ConfiguratorContext = createContext<
+  ConfiguratorContextValue<any> | undefined
+>(undefined)
 
-export function ConfiguratorProvider({
+export function ConfiguratorProvider<T>({
   children,
   fields,
   handleValidation,
-}: ConfiguratorProviderProps<any>) {
-  const [configurator, setConfigurator] =
-    useState<ConfiguratorContextType>(fields)
+}: ConfiguratorProviderProps<T>) {
+  const [configurator, setConfigurator] = useState<T>(fields)
 
   const [invalidFields, setInvalidFields] = useState<Error[]>([])
 
@@ -61,12 +36,6 @@ export function ConfiguratorProvider({
     setInvalidFields(errors)
 
     return errors.length === 0
-  }
-
-  function submitForm(data: any) {
-    if (validateFields()) {
-      console.log('Form submitted with data:', data)
-    }
   }
 
   return (
@@ -83,8 +52,8 @@ export function ConfiguratorProvider({
   )
 }
 
-export function useConfiguratorContext() {
-  const context = useContext(ConfiguratorContext)
+export function useConfiguratorContext<T>() {
+  const context = useContext(ConfiguratorContext) as ConfiguratorContextValue<T>
   if (!context) {
     throw new Error(
       'useConfiguratorContext must be used within a ConfiguratorContext.Provider'

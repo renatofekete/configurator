@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useConfiguratorContext } from '../context/ConfiguratorContext'
+import { calculateTotalPrice } from '../utils/price'
+import { ConfiguratorContextType } from '../types/types'
 import useConcurrentFetch from '../hooks/useConcurentFetch'
 import Checkmark from '../assets/icons/checkmark-icon.svg?react'
 import Ecs from '../assets/icons/ecs-icon.svg?react'
 import useFetch from '../hooks/useFetch'
 import InputCmp from './ui/InputCmp'
-import { calculateTotalPrice } from '../utils/price'
 import ButtonCmp from './ui/ButtonCmp'
 import ErrorMessageCmp from './ui/ErrorMessageCmp'
-
-import styles from './form.module.scss'
 import BadgeCmp from './ui/BadgeCmp'
+import styles from './form.module.scss'
 
 type Manufacturer = {
   id: number
@@ -25,7 +25,7 @@ type Service = {
 
 function Form() {
   const { configurator, setConfigurator, invalidFields } =
-    useConfiguratorContext()
+    useConfiguratorContext<ConfiguratorContextType>()
   const [couponShown, setCouponShown] = useState(false)
   const [couponValue, setCouponValue] = useState('')
   const [couponError, setCouponError] = useState('')
@@ -71,7 +71,7 @@ function Form() {
 
       fetchData()
     }
-  }, [])
+  }, [manufacturerList.length, servicesList.length, setConfigurator])
 
   const { callApi } = useFetch(
     `${couponEndpoint}/${couponValue}`,
@@ -115,7 +115,9 @@ function Form() {
     }))
   }
 
-  function handleCouponChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleCouponChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     setCouponValue(e.target.value)
   }
 
