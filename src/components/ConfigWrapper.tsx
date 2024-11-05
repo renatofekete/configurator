@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Info from './Info'
 import useMultiStep from '../hooks/useMultiStep'
 import Form from './Form'
@@ -20,8 +21,18 @@ type dataValues = {
 }
 
 function ConfigWrapper() {
-  const { validateFields, configurator } =
+  const { configurator, setConfigurator, setInvalidFields } =
     useConfiguratorContext<ConfiguratorContextType>()
+
+  const {
+    fullName = '',
+    phoneNumber = '',
+    email = '',
+    manufacturerId = -1,
+    serviceIds = [],
+    note = '',
+    promoCode = '',
+  } = configurator || {}
 
   const endpoint =
     'https://fe-interview-project-backend.accounts-a35.workers.dev/api/contact'
@@ -30,18 +41,69 @@ function ConfigWrapper() {
 
   const { callApi, errors } = useFetch(endpoint, authToken, 'POST')
 
-  async function handlePost() {
-    const data: dataValues = {
-      fullName: configurator.fullName,
-      phoneNumber: configurator.phoneNumber,
-      email: configurator.email,
-      manufacturerId: configurator.manufacturerId,
-      serviceIds: configurator.serviceIds,
-      note: configurator.note,
+  const fields: ConfiguratorContextType = {
+    fullName: '',
+    phoneNumber: '',
+    email: '',
+    manufacturerId: -1,
+    serviceIds: [],
+    coupon: 0,
+    promoCode: '',
+    note: '',
+    servicesList: [],
+    manufacturerList: [],
+  }
+
+  function handleValidateFields() {
+    const newInvalidFields = []
+
+    if (!fullName) {
+      newInvalidFields.push({ field: 'fullName', message: 'Name is required' })
+    }
+    if (!phoneNumber) {
+      newInvalidFields.push({
+        field: 'phoneNumber',
+        message: 'Telephone is required',
+      })
+    }
+    if (!email) {
+      newInvalidFields.push({ field: 'email', message: 'Email is required' })
     }
 
-    if (configurator.promoCode !== '') {
-      data.promoCode = configurator.promoCode
+    if (manufacturerId < 0) {
+      newInvalidFields.push({
+        field: 'manufacturerId',
+        message: 'Manufacturer is required',
+      })
+    }
+
+    if (serviceIds.length === 0) {
+      newInvalidFields.push({
+        field: 'serviceIds',
+        message: 'At least one service is required',
+      })
+    }
+
+    setInvalidFields(newInvalidFields)
+    return newInvalidFields.length === 0
+  }
+
+  useEffect(() => {
+    setConfigurator(fields)
+  }, [setConfigurator])
+
+  async function handlePost() {
+    const data: dataValues = {
+      fullName: fullName,
+      phoneNumber: phoneNumber,
+      email: email,
+      manufacturerId: manufacturerId,
+      serviceIds: serviceIds,
+      note: note,
+    }
+
+    if (promoCode !== '') {
+      data.promoCode = promoCode
     }
 
     const response = await callApi(data)
@@ -62,7 +124,7 @@ function ConfigWrapper() {
     {
       component: <Form />,
       nextButton: 'Nastavi',
-      handleBeforeNext: validateFields,
+      handleBeforeNext: handleValidateFields,
     },
     {
       component: <FormConfirmation />,

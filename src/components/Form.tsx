@@ -26,6 +26,10 @@ type Service = {
 function Form() {
   const { configurator, setConfigurator, invalidFields } =
     useConfiguratorContext<ConfiguratorContextType>()
+
+  if (!configurator) {
+    return <div>Loading...</div>
+  }
   const [couponShown, setCouponShown] = useState(false)
   const [couponValue, setCouponValue] = useState('')
   const [couponError, setCouponError] = useState('')
@@ -81,13 +85,6 @@ function Form() {
 
   const manufacturers = manufacturerList || []
   const services = servicesList || []
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
-  if (errors.length) {
-    return <div>Error!</div>
-  }
 
   async function handleCouponCheck(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -153,6 +150,13 @@ function Form() {
   }
 
   const price = calculateTotalPrice(servicesList, serviceIds, coupon)
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  if (errors.length) {
+    return <div>Error!</div>
+  }
 
   return (
     <form className={styles.form}>

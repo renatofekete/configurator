@@ -6,16 +6,14 @@ type Error = {
 }
 
 type ConfiguratorContextValue<T> = {
-  configurator: T
+  configurator: T | undefined
   setConfigurator: React.Dispatch<React.SetStateAction<T>>
   invalidFields: Error[]
-  validateFields: () => boolean
+  setInvalidFields: React.Dispatch<React.SetStateAction<Error[]>>
 }
 
-type ConfiguratorProviderProps<T> = {
+type ConfiguratorProviderProps = {
   children: ReactNode
-  fields: T
-  handleValidation: (configurator: T) => Error[]
 }
 
 const ConfiguratorContext = createContext<
@@ -24,19 +22,10 @@ const ConfiguratorContext = createContext<
 
 export function ConfiguratorProvider<T>({
   children,
-  fields,
-  handleValidation,
-}: ConfiguratorProviderProps<T>) {
-  const [configurator, setConfigurator] = useState<T>(fields)
+}: ConfiguratorProviderProps) {
+  const [configurator, setConfigurator] = useState<T | undefined>(undefined)
 
   const [invalidFields, setInvalidFields] = useState<Error[]>([])
-
-  function validateFields() {
-    const errors = handleValidation(configurator)
-    setInvalidFields(errors)
-
-    return errors.length === 0
-  }
 
   return (
     <ConfiguratorContext.Provider
@@ -44,7 +33,7 @@ export function ConfiguratorProvider<T>({
         configurator,
         setConfigurator,
         invalidFields,
-        validateFields,
+        setInvalidFields,
       }}
     >
       {children}

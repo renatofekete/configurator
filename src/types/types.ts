@@ -2,7 +2,7 @@ export type ConfiguratorContextType = {
   fullName: string
   phoneNumber: string
   email: string
-  manufacturerId: number | null
+  manufacturerId: number
   serviceIds: string[]
   promoCode: string
   coupon: number
