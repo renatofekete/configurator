@@ -1,3 +1,5 @@
+import styles from './info.module.scss'
+
 type InfoProps = {
   title: string
   content: string
@@ -6,7 +8,7 @@ type InfoProps = {
 
 function Info({ title, content, icon }: InfoProps) {
   return (
-    <div>
+    <div className={styles.info}>
       {icon}
       <h1>{title}</h1>
       <p>{content}</p>

@@ -32,6 +32,19 @@ function App() {
       newInvalidFields.push({ field: 'email', message: 'Email is required' })
     }
 
+    if (!configurator.manufacturerId) {
+      newInvalidFields.push({
+        field: 'manufacturerId',
+        message: 'Manufacturer is required',
+      })
+    }
+
+    if (configurator.serviceIds.length === 0) {
+      newInvalidFields.push({
+        field: 'serviceIds',
+        message: 'At least one service is required',
+      })
+    }
     return newInvalidFields
   }
 

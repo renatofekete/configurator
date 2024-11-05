@@ -1,0 +1,13 @@
+.badge {
+  display: flex;
+  border: 1px solid var(--base-400);
+  border-radius: 99px;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 5px;
+  gap: 5px;
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -9,6 +9,16 @@ import useFetch from '../hooks/useFetch'
 import Success from '../assets/icons/success-icon.svg?react'
 import Tools from '../assets/icons/tools-icon.svg?react'
 
+type dataValues = {
+  fullName: string
+  phoneNumber: string
+  email: string
+  manufacturerId: number
+  serviceIds: string[]
+  note: string
+  promoCode?: string
+}
+
 function ConfigWrapper() {
   const { validateFields, configurator } = useConfiguratorContext()
 
@@ -20,14 +30,17 @@ function ConfigWrapper() {
   const { callApi, errors } = useFetch(endpoint, authToken, 'POST')
 
   async function handlePost() {
-    const data = {
+    const data: dataValues = {
       fullName: configurator.fullName,
       phoneNumber: configurator.phoneNumber,
       email: configurator.email,
       manufacturerId: configurator.manufacturerId,
       serviceIds: configurator.serviceIds,
-      promoCode: configurator.promoCode,
       note: configurator.note,
+    }
+
+    if (configurator.promoCode !== '') {
+      data.promoCode = configurator.promoCode
     }
 
     const response = await callApi(data)
@@ -60,7 +73,7 @@ function ConfigWrapper() {
         <Info
           icon={<Success />}
           title='Vaša prijava je uspješno poslana'
-          content='Vaša prijava je uspješno poslana i zaprimljena. Kontaktirat ćemo vas u najkraćem mogućem roku. Hvala vam!'
+          content={`Vaša prijava je uspješno poslana i zaprimljena. Kontaktirat ćemo vas u najkraćem mogućem roku. \nHvala vam!`}
         />
       ),
     },
@@ -75,9 +88,8 @@ function ConfigWrapper() {
           isCentered && styles['wrapper--center']
         }`}
       >
-        <div>{step}</div>
         {currentElement}
-        <div>{buttons()}</div>
+        <div className={styles.buttons}>{buttons()}</div>
       </div>
     </>
   )

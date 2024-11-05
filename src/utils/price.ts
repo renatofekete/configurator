@@ -9,6 +9,15 @@ function getDiscount(coupon: number, totalPrice: number) {
   return (coupon / 100) * totalPrice
 }
 
+export function format(price: number) {
+  return new Intl.NumberFormat('hr-HR', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price)
+}
+
 export function calculateTotalPrice(
   items: any,
   selectedItems: any,
@@ -19,10 +28,11 @@ export function calculateTotalPrice(
     acc += price
     return acc
   }, 0)
+  const formatedPrice = format(totalPrice)
   const discount = getDiscount(coupon | 0, totalPrice)
-  const discountedPrice = totalPrice - discount
+  const discountedPrice = format(totalPrice - discount)
   return {
-    totalPrice,
+    formatedPrice,
     discount,
     discountedPrice,
   }

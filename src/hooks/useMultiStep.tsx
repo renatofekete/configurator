@@ -1,4 +1,5 @@
 import { ReactElement, useState } from 'react'
+import ButtonCmp from '../components/ui/ButtonCmp'
 
 type multiStepProps = {
   component: ReactElement
@@ -34,10 +35,15 @@ function useMultiStep(steps: multiStepProps[]) {
     return (
       <>
         {step > 1 && step < steps.length - 1 && (
-          <button onClick={back}>Nazad</button>
+          <ButtonCmp handleClick={back} text='Nazad' variant='secondary' />
         )}
         {steps[step].nextButton && (
-          <button onClick={next}>{steps[step].nextButton}</button>
+          <ButtonCmp
+            handleClick={next}
+            text={steps[step].nextButton}
+            variant='primary'
+            size='small'
+          />
         )}
       </>
     )

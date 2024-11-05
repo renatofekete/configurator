@@ -1,0 +1,17 @@
+.info {
+  font-family: Satoshi-Variable;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  h1 {
+    color: var(--primary-100);
+  }
+
+  p {
+    white-space: pre-line;
+  }
+}

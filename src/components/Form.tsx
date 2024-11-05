@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react'
 import { useConfiguratorContext } from '../context/ConfiguratorContext'
 import useConcurrentFetch from '../hooks/useConcurentFetch'
 import Checkmark from '../assets/icons/checkmark-icon.svg?react'
+import Ecs from '../assets/icons/ecs-icon.svg?react'
 import useFetch from '../hooks/useFetch'
 import InputCmp from './ui/InputCmp'
 import { calculateTotalPrice } from '../utils/price'
+import ButtonCmp from './ui/ButtonCmp'
+import ErrorMessageCmp from './ui/ErrorMessageCmp'
+
+import styles from './form.module.scss'
+import BadgeCmp from './ui/BadgeCmp'
 
 type Manufacturer = {
   id: number
@@ -22,6 +28,7 @@ function Form() {
     useConfiguratorContext()
   const [couponShown, setCouponShown] = useState(false)
   const [couponValue, setCouponValue] = useState('')
+  const [couponError, setCouponError] = useState('')
 
   const {
     manufacturerId,
@@ -88,13 +95,24 @@ function Form() {
     e.preventDefault()
     const data = await callApi()
     if (data) {
-      console.log(data)
       setConfigurator((prev) => ({
         ...prev,
         promoCode: data.code,
         coupon: data.discountPercentage,
       }))
+      setCouponValue('')
+      setCouponError('')
+    } else {
+      setCouponError('Kod nije valjan')
     }
+  }
+
+  function handleCouponRemove() {
+    setConfigurator((prev) => ({
+      ...prev,
+      promoCode: '',
+      coupon: 0,
+    }))
   }
 
   function handleCouponChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -135,97 +153,127 @@ function Form() {
   const price = calculateTotalPrice(servicesList, serviceIds, coupon)
 
   return (
-    <form>
+    <form className={styles.form}>
       <h4>Odaberite proizvođaća vašeg vozila</h4>
-      <div>
-        {manufacturers?.map((manufacturer: Manufacturer) => (
-          <div key={manufacturer.id}>
-            <label>
-              <input
-                type='radio'
-                name='manufacturerId'
-                checked={manufacturerId === manufacturer.id}
-                value={manufacturer.id}
-                onChange={handleChange}
-              />
-              {manufacturer.name}
-            </label>
-          </div>
-        ))}
-      </div>
+      <section>
+        <div className={styles.radio}>
+          {manufacturers?.map((manufacturer: Manufacturer) => (
+            <div key={manufacturer.id}>
+              <label>
+                <input
+                  type='radio'
+                  name='manufacturerId'
+                  checked={manufacturerId === manufacturer.id}
+                  value={manufacturer.id}
+                  onChange={handleChange}
+                />
+                {manufacturer.name}
+              </label>
+            </div>
+          ))}
+        </div>
+        {getErrorMessage('manufacturerId') && (
+          <ErrorMessageCmp errorMessage={getErrorMessage('manufacturerId')!} />
+        )}
+      </section>
       <h4>Odaberite jednu ili više usluga koju trebate</h4>
-      <div>
-        {services?.map((service: Service) => (
-          <div key={service.id}>
-            <label>
-              <input
-                type='checkbox'
-                name='serviceIds'
-                checked={serviceIds.includes(service.id.toString())}
-                value={service.id}
-                onChange={handleChange}
-              />
-              {service.name} - {service.price} €
-            </label>
-          </div>
-        ))}
-      </div>
-      <div>
-        <div>ukupno: {price.discountedPrice}€</div>
-        <div>
+      <section>
+        <div className={styles.checkbox}>
+          {services?.map((service: Service) => (
+            <div key={service.id}>
+              <label>
+                <input
+                  type='checkbox'
+                  name='serviceIds'
+                  checked={serviceIds.includes(service.id.toString())}
+                  value={service.id}
+                  onChange={handleChange}
+                />
+                {service.name} <span>({service.price}€)</span>
+              </label>
+            </div>
+          ))}
+        </div>
+        {getErrorMessage('serviceIds') && (
+          <ErrorMessageCmp errorMessage={getErrorMessage('serviceIds')!} />
+        )}
+      </section>
+      <div className={styles.coupon}>
+        <div className={styles.price}>
+          ukupno: <span>{price.discountedPrice}</span>
+        </div>
+        <div className={styles.couponForm}>
           {couponShown ? (
             <div>
-              <input
-                type='text'
+              <InputCmp
                 name='coupon'
                 value={couponValue}
-                onChange={handleCouponChange}
+                handleChange={handleCouponChange}
+                placeholder='Unesi kod'
+                errorMessage={couponError}
               />
-              <button onClick={handleCouponCheck}>
-                <Checkmark />
-              </button>
-              {promoCode && <span>{promoCode}</span>}
+              <ButtonCmp
+                handleClick={handleCouponCheck}
+                icon={<Checkmark />}
+                variant='primary'
+                size='icon'
+              />
             </div>
           ) : (
             <span onClick={() => setCouponShown(true)}>Imam kupon</span>
           )}
+          {promoCode && (
+            <div className={styles.couponBadge}>
+              <BadgeCmp
+                text={promoCode}
+                icon={<Ecs />}
+                handleClick={handleCouponRemove}
+              />
+            </div>
+          )}
         </div>
       </div>
       <h4>Vaši podaci</h4>
-      <InputCmp
-        label='Ime i prezime:'
-        placeholder='Unesite ime i prezime'
-        name='fullName'
-        value={fullName}
-        handleChange={handleChange}
-        errorMessage={getErrorMessage('fullName')}
-      />
-      <InputCmp
-        label='Broj telefona:'
-        placeholder='Unesite broj telefona'
-        type='tel'
-        name='phoneNumber'
-        value={phoneNumber}
-        handleChange={handleChange}
-        errorMessage={getErrorMessage('phoneNumber')}
-      />
-      <InputCmp
-        label='Email adresa:'
-        placeholder='Unesite email adresu'
-        type='email'
-        name='email'
-        value={email}
-        handleChange={handleChange}
-        errorMessage={getErrorMessage('email')}
-      />
-      <InputCmp
-        label='Napomena (opcionalno):'
-        placeholder='Unesite napomenu'
-        as='textarea'
-        name='note'
-        value={note}
-        handleChange={handleChange}
-      />
+      <div className={styles.fields}>
+        <InputCmp
+          label='Ime i prezime:'
+          placeholder='Unesite ime i prezime'
+          name='fullName'
+          value={fullName}
+          handleChange={handleChange}
+          errorMessage={getErrorMessage('fullName')}
+        />
+        <InputCmp
+          label='Broj telefona:'
+          placeholder='Unesite broj telefona'
+          type='tel'
+          name='phoneNumber'
+          value={phoneNumber}
+          handleChange={handleChange}
+          errorMessage={getErrorMessage('phoneNumber')}
+        />
+      </div>
+      <div className={styles.fields}>
+        <InputCmp
+          label='Email adresa:'
+          placeholder='Unesite email adresu'
+          type='email'
+          name='email'
+          value={email}
+          handleChange={handleChange}
+          errorMessage={getErrorMessage('email')}
+        />
+      </div>
+      <div className={styles.fields}>
+        <InputCmp
+          label='Napomena (opcionalno):'
+          placeholder='Unesite napomenu'
+          as='textarea'
+          name='note'
+          value={note}
+          handleChange={handleChange}
+        />
+      </div>
     </form>
   )
 }

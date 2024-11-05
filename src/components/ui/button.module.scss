@@ -1,0 +1,65 @@
+.btn {
+  font-family: Satoshi-Variable;
+  border-radius: 3px;
+}
+
+.primary {
+  background-color: var(--primary-100);
+  color: var(--base-600);
+  border: none;
+  &:hover {
+    background-color: var(--primary-200);
+  }
+}
+
+.secondary {
+  background-color: var(--base-600);
+  color: var(--base-100);
+  border: 1px solid var(--base-200);
+  &:hover {
+    background-color: var(--base-500);
+  }
+}
+
+.tertiary {
+  border: none;
+  background-color: var(--base-600);
+  &:hover {
+    background-color: var(--base-500);
+  }
+}
+
+.icon {
+  padding: 5px;
+  & > svg {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.small {
+  font-size: 18px;
+  padding: 5px 15px;
+  line-height: 25.2px;
+}
+
+.big {
+  font-size: 24px;
+  padding: 5px 15px;
+  line-height: 33.6px;
+}
+
+.s {
+  padding: 5px;
+  & > svg {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.xs {
+  padding-left: 5px;
+  padding-right: 2px;
+  font-size: 16px;
+  line-height: 24px;
+}

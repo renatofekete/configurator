@@ -1,4 +1,5 @@
 import styles from './input.module.scss'
+import ErrorMessageCmp from './ErrorMessageCmp'
 
 type InputCmpProps = {
   name: string
@@ -44,7 +45,7 @@ function InputCmp({
           placeholder={placeholder}
         />
       )}
-      {errorMessage && <p>{errorMessage}</p>}
+      <ErrorMessageCmp errorMessage={errorMessage} />
     </div>
   )
 }
