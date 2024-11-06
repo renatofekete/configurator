@@ -2,7 +2,7 @@ import styles from './button.module.scss'
 
 type ButtonSizeByVariant =
   | { variant: 'primary'; size: 'big' | 'small' | 'icon' }
-  | { variant: 'secondary' }
+  | { variant: 'secondary'; size?: never }
   | { variant: 'tertiary'; size: 's' | 'xs' }
 
 type ButtonCmpProps = ButtonSizeByVariant & {

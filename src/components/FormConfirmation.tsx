@@ -1,10 +1,16 @@
 import { useConfiguratorContext } from '../context/ConfiguratorContext'
 import { calculateTotalPrice, format } from '../utils/price'
+import { ConfiguratorContextType } from '../types/types'
 
 import styles from './formConfirmation.module.scss'
 
 function FormConfirmation() {
-  const { configurator } = useConfiguratorContext()
+  const { configurator } = useConfiguratorContext<ConfiguratorContextType>()
+
+  if (!configurator) {
+    return <div>Loading...</div>
+  }
+
   const {
     manufacturerId,
     fullName,

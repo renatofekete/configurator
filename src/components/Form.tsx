@@ -204,12 +204,12 @@ function Form() {
           <ErrorMessageCmp errorMessage={getErrorMessage('serviceIds')!} />
         )}
       </section>
-      <div className={styles.coupon}>
+      <section className={styles.coupon}>
         <div className={styles.price}>
           ukupno: <span>{price.discountedPrice}</span>
         </div>
         <div className={styles.couponForm}>
-          {couponShown ? (
+          {couponShown || promoCode ? (
             <div>
               <InputCmp
                 name='coupon'
@@ -239,9 +239,9 @@ function Form() {
             </div>
           )}
         </div>
-      </div>
+      </section>
       <h4>Vaši podaci</h4>
-      <div className={styles.fields}>
+      <section className={styles.fields}>
         <InputCmp
           label='Ime i prezime:'
           placeholder='Unesite ime i prezime'
@@ -259,8 +259,8 @@ function Form() {
           handleChange={handleChange}
           errorMessage={getErrorMessage('phoneNumber')}
         />
-      </div>
-      <div className={styles.fields}>
+      </section>
+      <section className={styles.fields}>
         <InputCmp
           label='Email adresa:'
           placeholder='Unesite email adresu'
@@ -270,8 +270,8 @@ function Form() {
           handleChange={handleChange}
           errorMessage={getErrorMessage('email')}
         />
-      </div>
-      <div className={styles.fields}>
+      </section>
+      <section className={styles.fields}>
         <InputCmp
           label='Napomena (opcionalno):'
           placeholder='Unesite napomenu'
@@ -280,7 +280,7 @@ function Form() {
           value={note}
           handleChange={handleChange}
         />
-      </div>
+      </section>
     </form>
   )
 }
