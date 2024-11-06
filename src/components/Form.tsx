@@ -152,7 +152,7 @@ function Form() {
       <section>
         <div
           className={`${styles.radio} ${
-            getErrorMessage('manufacturerId') && styles.error
+            getErrorMessage('manufacturerId') ? styles.error : ''
           }`}
         >
           {manufacturers?.map((manufacturer: Manufacturer) => (
@@ -179,7 +179,7 @@ function Form() {
       <section>
         <div
           className={`${styles.checkbox} ${
-            getErrorMessage('serviceIds') && styles.error
+            getErrorMessage('serviceIds') ? styles.error : ''
           }`}
         >
           {services?.map((service: Service) => (

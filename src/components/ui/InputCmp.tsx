@@ -27,7 +27,7 @@ function InputCmp({
   errorMessage,
 }: InputCmpProps) {
   return (
-    <div className={`${styles.input} ${errorMessage && styles.error}`}>
+    <div className={`${styles.input} ${errorMessage ? styles.error : ''}`}>
       {label && <label>{label}</label>}
       {as === 'input' ? (
         <input
@@ -45,7 +45,7 @@ function InputCmp({
           placeholder={placeholder}
         />
       )}
-      <ErrorMessageCmp errorMessage={errorMessage} />
+      {errorMessage && <ErrorMessageCmp errorMessage={errorMessage} />}
     </div>
   )
 }
