@@ -16,10 +16,40 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   padding: 10px;
+
   label {
+    display: flex;
+    align-items: center;
+    position: relative;
+    user-select: none;
     input {
       margin-right: 10px;
       font-size: 16px;
+      opacity: 0;
+      cursor: pointer;
+      height: 16px;
+      width: 16px;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 16px;
+      width: 16px;
+      border: 1px solid var(--primary-100);
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+    input:checked + .checkmark {
+      background-color: white;
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 2px;
+        background-color: var(--primary-100);
+        border-radius: 50%;
+      }
     }
   }
 }
@@ -30,12 +60,38 @@
   gap: 5px;
   padding: 10px;
   label {
+    position: relative;
     input {
       font-size: 16px;
       margin-right: 10px;
+      opacity: 0;
     }
     span {
       color: var(--primary-100);
+    }
+    input:checked + .checkmark {
+      background-color: var(--primary-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      svg {
+        display: block;
+      }
+    }
+    .checkmark {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      height: 16px;
+      width: 16px;
+      background-color: var(--bg-200);
+      border: 1px solid var(--primary-100);
+      border-radius: 3px;
+      cursor: pointer;
+      svg {
+        display: none;
+      }
     }
   }
 }
@@ -85,4 +141,12 @@
 
 .couponBadge {
   margin-top: 10px;
+}
+
+.error {
+  color: var(--error);
+
+  .checkmark {
+    box-shadow: 0px 0px 0px 3px var(--error-shadow);
+  }
 }

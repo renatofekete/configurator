@@ -3,7 +3,8 @@ import { useConfiguratorContext } from '../context/ConfiguratorContext'
 import { calculateTotalPrice } from '../utils/price'
 import { ConfiguratorContextType } from '../types/types'
 import useConcurrentFetch from '../hooks/useConcurentFetch'
-import Checkmark from '../assets/icons/checkmark-icon.svg?react'
+import CheckmarkIcon from '../assets/icons/checkmark-icon.svg?react'
+import Checkmark from '../assets/icons/checkmark.svg?react'
 import Ecs from '../assets/icons/ecs-icon.svg?react'
 import useFetch from '../hooks/useFetch'
 import InputCmp from './ui/InputCmp'
@@ -149,7 +150,11 @@ function Form() {
     <form className={styles.form}>
       <h4>Odaberite proizvođaća vašeg vozila</h4>
       <section>
-        <div className={styles.radio}>
+        <div
+          className={`${styles.radio} ${
+            getErrorMessage('manufacturerId') && styles.error
+          }`}
+        >
           {manufacturers?.map((manufacturer: Manufacturer) => (
             <div key={manufacturer.id}>
               <label>
@@ -160,6 +165,7 @@ function Form() {
                   value={manufacturer.id}
                   onChange={handleChange}
                 />
+                <span className={styles.checkmark}></span>
                 {manufacturer.name}
               </label>
             </div>
@@ -171,7 +177,11 @@ function Form() {
       </section>
       <h4>Odaberite jednu ili više usluga koju trebate</h4>
       <section>
-        <div className={styles.checkbox}>
+        <div
+          className={`${styles.checkbox} ${
+            getErrorMessage('serviceIds') && styles.error
+          }`}
+        >
           {services?.map((service: Service) => (
             <div key={service.id}>
               <label>
@@ -182,6 +192,9 @@ function Form() {
                   value={service.id}
                   onChange={handleChange}
                 />
+                <span className={styles.checkmark}>
+                  <Checkmark />
+                </span>
                 {service.name} <span>({service.price}€)</span>
               </label>
             </div>
@@ -207,7 +220,7 @@ function Form() {
               />
               <ButtonCmp
                 handleClick={handleCouponCheck}
-                icon={<Checkmark />}
+                icon={<CheckmarkIcon />}
                 variant='primary'
                 size='icon'
               />
