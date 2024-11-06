@@ -39,7 +39,7 @@ function ConfigWrapper() {
 
   const authToken = import.meta.env.VITE_X_AUTH_TOKEN
 
-  const { callApi, errors } = useFetch(endpoint, authToken, 'POST')
+  const { callApi, errors, loading } = useFetch(endpoint, authToken, 'POST')
 
   const fields: ConfiguratorContextType = {
     fullName: '',
@@ -138,6 +138,7 @@ function ConfigWrapper() {
       component: <FormConfirmation />,
       nextButton: 'Pošalji',
       handleBeforeNext: handlePost,
+      isNextDisabled: loading,
     },
     {
       component: (

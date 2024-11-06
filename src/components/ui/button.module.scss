@@ -1,6 +1,11 @@
 .btn {
   font-family: Satoshi-Variable;
   border-radius: 3px;
+  &:disabled,
+  &:disabled:hover {
+    background-color: var(--base-400);
+    color: var(--base-300);
+  }
 }
 
 .primary {

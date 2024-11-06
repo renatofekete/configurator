@@ -65,7 +65,7 @@ function Form() {
     }
   }, [manufacturerList.length, servicesList.length, setConfigurator])
 
-  const { callApi } = useFetch(
+  const { callApi, loading: singleLoading } = useFetch(
     `${couponEndpoint}/${couponValue}`,
     authToken,
     'POST'
@@ -223,6 +223,7 @@ function Form() {
                 icon={<CheckmarkIcon />}
                 variant='primary'
                 size='icon'
+                disabled={singleLoading}
               />
             </div>
           ) : (

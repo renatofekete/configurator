@@ -5,6 +5,7 @@ type multiStepProps = {
   component: ReactElement
   nextButton?: string
   handleBeforeNext?: () => boolean | Promise<boolean>
+  isNextDisabled?: boolean
 }
 
 function useMultiStep(steps: multiStepProps[]) {
@@ -43,6 +44,7 @@ function useMultiStep(steps: multiStepProps[]) {
             text={steps[step].nextButton}
             variant='primary'
             size='small'
+            disabled={steps[step].isNextDisabled}
           />
         )}
       </>
